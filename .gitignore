@@ -1,6 +1,7 @@
 /target
 Cargo.lock
 /hello
+/sysprobe
 *.o
 *.a
 *.so

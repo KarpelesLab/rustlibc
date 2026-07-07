@@ -44,9 +44,14 @@ pub mod types;
 
 // C standard / POSIX headers, one module per header.
 pub mod ctype;
+pub mod dirent;
 pub mod fcntl;
+pub mod locale;
 pub mod malloc;
 pub mod math;
+pub mod poll;
+pub mod pthread;
+pub mod sched;
 pub mod setjmp;
 pub mod signal;
 pub mod stdio;
@@ -56,6 +61,9 @@ pub mod strings;
 pub mod time;
 pub mod unistd;
 pub mod wchar;
+
+// `sys/*` headers grouped under one module tree.
+pub mod sys;
 
 // C runtime bootstrap (`_start`, `__libc_start_main`). Owns the program entry
 // point, so it must be disabled when linking against another libc — and under

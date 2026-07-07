@@ -119,6 +119,17 @@ pub extern "C" fn labs(j: c_long) -> c_long {
     j.wrapping_abs()
 }
 
+#[cfg_attr(not(test), unsafe(no_mangle))]
+pub extern "C" fn llabs(j: c_longlong) -> c_longlong {
+    j.wrapping_abs()
+}
+
+/// `imaxabs` (declared in `<inttypes.h>`) — absolute value of an `intmax_t`.
+#[cfg_attr(not(test), unsafe(no_mangle))]
+pub extern "C" fn imaxabs(j: i64) -> i64 {
+    j.wrapping_abs()
+}
+
 // --- search & sort ---------------------------------------------------------
 
 /// Comparator type shared by `qsort`/`bsearch`.

@@ -20,7 +20,14 @@ mod x86_64 {
     pub const CLOSE: usize = 3;
     pub const STAT: usize = 4;
     pub const FSTAT: usize = 5;
+    pub const POLL: usize = 7;
     pub const LSEEK: usize = 8;
+    pub const MADVISE: usize = 28;
+    pub const SCHED_YIELD: usize = 24;
+    pub const FCHMOD: usize = 91;
+    pub const MKDIRAT: usize = 258;
+    pub const FCHMODAT: usize = 268;
+    pub const NEWFSTATAT: usize = 262;
     pub const MMAP: usize = 9;
     pub const MPROTECT: usize = 10;
     pub const MUNMAP: usize = 11;
@@ -54,6 +61,13 @@ mod x86_64 {
 mod aarch64 {
     // asm-generic numbering.
     pub const IOCTL: usize = 29;
+    pub const MKDIRAT: usize = 34;
+    pub const FCHMOD: usize = 52;
+    pub const FCHMODAT: usize = 53;
+    pub const NEWFSTATAT: usize = 79;
+    pub const PPOLL: usize = 73;
+    pub const SCHED_YIELD: usize = 124;
+    pub const MADVISE: usize = 233;
     pub const OPENAT: usize = 56;
     pub const CLOSE: usize = 57;
     pub const LSEEK: usize = 62;

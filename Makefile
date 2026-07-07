@@ -19,7 +19,7 @@ STATICLIB := $(LIBDIR)/librustlibc.a
 CFLAGS := -nostdinc -Iinclude -Wall -O2
 LDFLAGS := -nostdlib -nostartfiles -no-pie -static
 
-.PHONY: all lib hello run test clean
+.PHONY: all lib hello sysprobe run test clean
 
 all: lib
 
@@ -31,12 +31,16 @@ $(STATICLIB): lib
 hello: examples/hello.c $(STATICLIB)
 	cc $(CFLAGS) $(LDFLAGS) $< $(STATICLIB) -o hello
 
-run: hello
-	./hello
+sysprobe: examples/sysprobe.c $(STATICLIB)
+	cc $(CFLAGS) $(LDFLAGS) $< $(STATICLIB) -o sysprobe
+
+run: hello sysprobe
+	@echo "=== hello ==="; ./hello
+	@echo "=== sysprobe ==="; ./sysprobe
 
 test:
 	cargo test --lib
 
 clean:
 	cargo clean
-	rm -f hello
+	rm -f hello sysprobe
