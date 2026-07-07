@@ -1,0 +1,6 @@
+/target
+Cargo.lock
+/hello
+*.o
+*.a
+*.so

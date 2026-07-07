@@ -1,0 +1,45 @@
+[package]
+name = "rustlibc"
+version = "0.0.1"
+edition = "2024"
+rust-version = "1.88"
+description = "A full libc implementation as a single Rust crate, exposing C (static & dynamic) bindings."
+license = "MIT"
+repository = "https://github.com/KarpelesLab/rustlibc"
+readme = "README.md"
+keywords = ["libc", "no_std", "freestanding", "ffi"]
+categories = ["no-std", "external-ffi-bindings", "os"]
+publish = false
+
+# The crate is consumed three ways:
+#   - `staticlib` -> librustlibc.a for static linking into C programs / a full static libc
+#   - `cdylib`    -> librustlibc.so for dynamic linking
+#   - `rlib`      -> so Rust code (and our own integration tests) can depend on it
+[lib]
+name = "rustlibc"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[features]
+default = ["crt"]
+# Provide the C runtime entry point (`_start`) and program bootstrap.
+# Disable when linking rustlibc alongside another libc that owns the entry point.
+crt = []
+
+# Note on C symbol exports: every libc function is emitted with
+# `#[cfg_attr(not(test), unsafe(no_mangle))]`. This publishes the canonical C
+# name in real staticlib/cdylib/rlib builds, but drops it under `cargo test`,
+# where the std test harness already links the system libc and a second strong
+# `memcpy`/`printf`/... would be a duplicate-symbol link error. Unit tests call
+# the Rust paths (`rustlibc::string::memcpy`) directly instead.
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+opt-level = "s"
+lto = true
+codegen-units = 1
+
+[profile.release.package."*"]
+opt-level = "s"

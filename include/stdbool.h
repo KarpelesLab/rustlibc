@@ -1,0 +1,12 @@
+/* stdbool.h — boolean type and values (C standard). Part of rustlibc. */
+#ifndef _RUSTLIBC_STDBOOL_H
+#define _RUSTLIBC_STDBOOL_H
+
+#if !defined(__cplusplus)
+#define bool _Bool
+#define true 1
+#define false 0
+#endif
+#define __bool_true_false_are_defined 1
+
+#endif /* _RUSTLIBC_STDBOOL_H */
