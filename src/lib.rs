@@ -22,6 +22,8 @@
 // crate is only `no_std` when not testing. Our C-ABI exports and the panic
 // handler are likewise gated `not(test)` so nothing collides with the harness.
 #![cfg_attr(not(test), no_std)]
+// Consume C `va_list`s (printf/scanf family). Nightly-only; see rust-toolchain.toml.
+#![feature(c_variadic)]
 #![allow(non_camel_case_types)]
 #![allow(non_upper_case_globals)]
 #![allow(clippy::missing_safety_doc)]

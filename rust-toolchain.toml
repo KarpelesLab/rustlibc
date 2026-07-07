@@ -1,5 +1,8 @@
 [toolchain]
-channel = "1.88"
+# Nightly is required for `#![feature(c_variadic)]`, which lets us consume a C
+# `va_list` in Rust and thus implement the real printf/scanf family. (The crate
+# otherwise still targets the 1.88 language level / edition 2024.)
+channel = "nightly"
 components = ["rustc", "cargo", "rust-src"]
 targets = [
     "x86_64-unknown-linux-gnu",

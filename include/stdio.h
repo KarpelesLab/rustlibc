@@ -1,12 +1,12 @@
 /* stdio.h — standard input/output (C standard).
  *
- * Part of rustlibc. The non-variadic surface (fopen excepted) is implemented;
- * the printf/scanf family is currently a STUB pending variadic (`c_variadic`)
- * support on the pinned toolchain — see src/stdio.rs. Stub printf/fprintf emit
- * the format string verbatim and ignore conversion specifiers. */
+ * Part of rustlibc. The non-variadic surface (fopen excepted) and the full
+ * printf family are implemented; the scanf family is not yet provided. See
+ * src/stdio.rs. */
 #ifndef _RUSTLIBC_STDIO_H
 #define _RUSTLIBC_STDIO_H
 
+#include <stdarg.h>
 #include <stddef.h>
 
 #ifdef __cplusplus
@@ -43,9 +43,15 @@ int feof(FILE *stream);
 void clearerr(FILE *stream);
 void perror(const char *s);
 
-/* Formatted output (STUB — variadic, see header notes). */
+/* Formatted output. */
 int printf(const char *format, ...);
 int fprintf(FILE *stream, const char *format, ...);
+int snprintf(char *str, size_t size, const char *format, ...);
+int sprintf(char *str, const char *format, ...);
+int vprintf(const char *format, va_list ap);
+int vfprintf(FILE *stream, const char *format, va_list ap);
+int vsnprintf(char *str, size_t size, const char *format, va_list ap);
+int vsprintf(char *str, const char *format, va_list ap);
 
 #ifdef __cplusplus
 }

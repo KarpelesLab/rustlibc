@@ -5,8 +5,8 @@
  * calls here go through rustlibc's own string/stdio/stdlib, not the system
  * libc. Build with `make hello` (see the Makefile).
  *
- * Note: this deliberately avoids printf, which is still a stub (variadic
- * support pending). It uses puts/fputs/fwrite, which are fully implemented. */
+ * Uses printf, puts, malloc, and the string/number helpers — all going through
+ * rustlibc rather than the system libc. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,30 +16,27 @@ int main(int argc, char **argv)
 {
 	puts("Hello from rustlibc!");
 
-	/* String ops. */
-	char buf[64];
-	strcpy(buf, "argv[0] = ");
-	strcat(buf, argc > 0 ? argv[0] : "(none)");
-	puts(buf);
+	/* Formatted output through rustlibc's own printf engine. */
+	printf("argc=%d, argv[0]=%s\n", argc, argc > 0 ? argv[0] : "(none)");
+	printf("int=%d hex=%#x oct=%o char=%c\n", 42, 255, 64, '!');
+	printf("padded=[%6d] left=[%-6d] zero=[%06d]\n", 7, 7, 7);
+	printf("float=%.3f str=%.4s pct=%%\n", 3.14159, "truncated");
 
 	/* Allocation + memory ops. */
 	char *heap = malloc(32);
 	memset(heap, '=', 31);
 	heap[31] = '\0';
-	fputs(heap, stdout);
-	fputc('\n', stdout);
+	printf("heap: %s\n", heap);
 	free(heap);
 
-	/* Number conversion. */
-	long n = strtol("  1234 rest", NULL, 10);
-	char digits[8];
-	int i = 8;
-	digits[--i] = '\n';
-	while (n > 0 && i > 0) {
-		digits[--i] = '0' + (n % 10);
-		n /= 10;
-	}
-	fwrite(digits + i, 1, 8 - i, stdout);
+	/* snprintf into a fixed buffer. */
+	char buf[32];
+	int n = snprintf(buf, sizeof(buf), "%d + %d = %d", 2, 3, 2 + 3);
+	printf("snprintf wrote %d bytes: \"%s\"\n", n, buf);
+
+	/* Number conversion round-trip. */
+	long v = strtol("  1234 rest", NULL, 10);
+	printf("strtol -> %ld\n", v);
 
 	return 0;
 }
